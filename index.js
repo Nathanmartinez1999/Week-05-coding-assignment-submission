@@ -22,7 +22,7 @@ class genre {
         }
     }
     describe() {
-        return `${this.artist} has ${this.song.length} songs.`;
+        return `${this.artist} has ${this.songs.length} songs.`;
     }
 }
 
@@ -40,13 +40,13 @@ class menu {
                     this.createGenre();
                     break;
                 case '2':
-                    this.viewGenre();
+                    this.viewGenres();
                     break;
                 case '3':
                     this.deleteGenre();
                     break;
                 case '4':
-                    this.showAllGenres();
+                    this.displayAllGenres();
                     break;
                 default:
                     selection = 0;
@@ -61,7 +61,7 @@ class menu {
        1) create new genre
        2) view genres
        3) remove/delete genre
-       4) show all genres 
+       4) display all genres 
         `);
     }
 
@@ -70,12 +70,12 @@ class menu {
     0) back
     1) create song
     2) delete song
-    ${genreList}
+${genreList}
     `);
 
     }
 
-    displayGenre() {
+    displayAllGenres() {
         let genreString = '';
         for (let i = 0; i < this.genre.length; i++) {
             genreString += i + ')' + this.genre[i].name + '\n';
@@ -85,32 +85,52 @@ class menu {
 
     createGenre() {
         let name = prompt('enter name of favorite music genre:');
-        this.genres.push(new genre(name));
+        this.genre.push(new genre(name));
     }
 
-    viewGenre() {
-        let index = prompt('enter the number of the genre you wanna listen to');
-        if (index > -1 && index < this.genres.length) {
-            this.selectedGenre = this.genres[index];
-            let description = 'Favorite Genre Name' + this.selectedGenre.name + '\n';
+    viewGenres() {
+        let index = prompt('enter the number of the genre you wanna listen to:');
+        if (index > -1 && index < this.genre.length) {
+            this.selectedGenre = this.genre[index];
+            let description = 'Favorite Genre Name:' + this.selectedGenre.name + '\n';
 
-            for (let i = 0; i < this.selectedGenre.artist.length; i++) {
-                description += i + ')' + this.selectedGenre.artist[i].name
-                    + ' - ' + this.selectedGenre.artist[i].song + '\n';
-
-
+            for (let i = 0; i < this.selectedGenre.length; i++) {
+                description += i + ') ' + this.selectedGenre[i].name
+                    + ' - ' + this.selectedGenre[i].artist + '\n';
             }
             let selection = this.showGenreMenuOptions(description);
             switch (selection) {
                 case '1':
-                    this.createNewGenre();
+                    this.createSong();
                     break;
                 case '2':
-                    this.removeGenre();
+                    this.removeSong();
             }
         }
     }
-}
+    deleteGenre() {
 
-let menu = new menu()
-menu.start
+        let index = prompt('enter number of genre you would like to delete:');
+        if (index > -1 && index < this.genre.length) {
+            this.genre.splice(index, 1);
+        }
+    }
+
+    createSong() {
+        let name = prompt('enter name of favorite artist:');
+        let title = prompt('Enter name of favortite track by favorite artist:');
+        this.genre.push(new song(name, title));
+    }
+
+    removeSong() {
+        let index = prompt('enter number of the song you would like to delete');
+        if (index > -1 && index < this.selectedGenre.songs.length) {
+            this.selectedGenre.splice(index, 1);
+        }
+
+    }
+
+}
+let musicMenu = new menu();
+musicMenu.start();
+
